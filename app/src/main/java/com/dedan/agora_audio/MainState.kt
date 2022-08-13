@@ -80,7 +80,7 @@ class MainState{
         audioConfig.filePath=getAudioStorageFile(activity).path
         audioConfig.recordingQuality=Constants.AUDIO_RECORDING_QUALITY_MEDIUM
         audioConfig.recordingPosition=Constants.AUDIO_RECORDING_POSITION_MIXED_RECORDING_AND_PLAYBACK
-       val res= mRtcEngine?.startAudioRecording(audioConfig)
+        val res= mRtcEngine?.startAudioRecording(audioConfig)
         Log.i("Recording started",res.toString())
         isRecording=true
         hasRecording=false
@@ -109,10 +109,8 @@ class MainState{
         return File(path, "audio.aac")
     }
     fun collectRawDataStream(activity : Activity){
-        mRtcEngine?.muteLocalAudioStream(false)
-        mRtcEngine?.setEnableSpeakerphone(true)
         audioFrameObserver.openAudioFile(activity)
-       val success= mRtcEngine?.registerAudioFrameObserver(audioFrameObserver);
+        val success= mRtcEngine?.registerAudioFrameObserver(audioFrameObserver);
         Log.i(TAG,success.toString())
         isProcessingRawData=true
     }
@@ -187,7 +185,8 @@ class MainState{
         }
 
         // Implement the getRecordAudioParams callback.
-        // Set the audio recording format in the return value of this callback for the onRecordFrame callback.
+        // Set the audio recording format in the return value of this callback for
+        // the onRecordFrame callback.
         override fun getRecordAudioParams(): AudioParams {
             return AudioParams(
                 SAMPLE_RATE,
@@ -197,17 +196,19 @@ class MainState{
             )
         }
 
-        // Implement the onRecordFrame callback, get audio data from the callback, and send the data to the SDK after mixing it with the local audio file.
+        // Implement the onRecordFrame callback,
+        // get audio data from the callback,
+        // and send the data to the SDK after mixing it with the local audio file.
         override fun onRecordFrame(audioFrame: AudioFrame): Boolean {
             Log.i("Raw Audio playing", audioFrame.channels.toString())
             try {
-                    val byteBuffer: ByteBuffer = audioFrame.samples
-                    val buffer: ByteArray = readBuffer()
-                    val origin = ByteArray(byteBuffer.remaining())
-                    byteBuffer.get(origin)
-                    byteBuffer.flip()
-                    audioAggregate(origin, buffer)
-                        .let { byteBuffer.put(it, 0, byteBuffer.remaining()) }
+                val byteBuffer: ByteBuffer = audioFrame.samples
+                val buffer: ByteArray = readBuffer()
+                val origin = ByteArray(byteBuffer.remaining())
+                byteBuffer.get(origin)
+                byteBuffer.flip()
+                audioAggregate(origin, buffer)
+                    .let { byteBuffer.put(it, 0, byteBuffer.remaining()) }
 
             }catch (e:Exception){
                 e.message?.let { Log.e("Error: ", it) }
@@ -250,7 +251,7 @@ class MainState{
         override fun getMixedAudioParams(): AudioParams? {
             return AudioParams(
                 SAMPLE_RATE,
-               SAMPLE_NUM_OF_CHANNEL,
+                SAMPLE_NUM_OF_CHANNEL,
                 Constants.RAW_AUDIO_FRAME_OP_MODE_READ_ONLY,
                 SAMPLES_PER_CALL
             )
