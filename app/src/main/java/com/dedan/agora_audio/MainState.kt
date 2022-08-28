@@ -32,9 +32,9 @@ class MainState{
     //A random and unique Id for each user
     private val USER_ID=abs((0..9999).random())
     // Fill the channel name.
-    private val CHANNEL = "raw_audio_stream"
+    private val CHANNEL = ""
     // Fill the temp token generated on Agora Console.
-    private val TOKEN = "00691e3bfae55774b1e8c64fd368a65e40dIABNSkdoy1D1cv+g9D5t3ou8oTVu3btasO+wliPnGsTqnjDB02cAAAAAEACxI7THs8b4YgEAAQCyxvhi"
+    private val TOKEN = ""
     private var mRtcEngine: RtcEngine?= null
     private val mRtcEventHandler = object : IRtcEngineEventHandler() {
 

@@ -8,20 +8,20 @@ import android.content.ContextWrapper
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.dedan.agora_audio.ui.theme.AgoraAudioTheme
+import com.dedan.agora_audio.ui.theme.Purple700
 
 class MainActivity : ComponentActivity() {
     private val mainState:MainState = MainState()
@@ -60,6 +60,10 @@ fun AgoraVoice() {
             }
         },
     ){
+        Box(modifier=Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.TopCenter) {
+            Text(text = "Voice Call in Progress")
+        }
         Column(
             modifier = Modifier
                 .padding(it)
@@ -78,7 +82,7 @@ fun AgoraVoice() {
                       mainState.startRecording(context.findActivity()!!)
                   }
               }) {
-                  Text(text = "Start Recording")
+                  Text(text = "Start Recording Call")
               }
           }else{
               Button(
@@ -86,7 +90,7 @@ fun AgoraVoice() {
                   onClick = {
                       mainState.stopRecording()
                   }) {
-                  Text(text = "Stop Recording")
+                  Text(text = "Stop Recording Call")
               }
           }
               if(!mainState.isProcessingRawData){
@@ -95,7 +99,7 @@ fun AgoraVoice() {
                       onClick = {
                       mainState.collectRawDataStream(context.findActivity()!!)
                   }) {
-                      Text(text = "Process Raw Audio")
+                      Text(text = "Play Song")
                   }
               }else{
                   Button(
@@ -103,22 +107,25 @@ fun AgoraVoice() {
                       onClick = {
                       mainState.stopRawDataStreamCollection()
                   }) {
-                      Text(text = "Stop Processing Raw Audio")
+                      Text(text = "Stop Song")
                   }
               }
+            Spacer(modifier = Modifier.height(30.dp))
             if(mainState.hasRecording){
                 Button(
                     colors = ButtonDefaults.buttonColors(backgroundColor = Green),
                     onClick = {
                         mainState.playRecording(context.findActivity()!!)
                     }) {
-                    Text(text = "Play Recording")
+                    Text(text = "Play Voice Call Recording")
                 }
             }
 
 
 
-            Button(onClick = {
+            Button(
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Magenta),
+                onClick = {
                 mainState.toggleMic()
             }) {
                 Text(text =
